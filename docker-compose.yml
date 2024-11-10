@@ -1,0 +1,49 @@
+services:
+  kafka:
+    image: apache/kafka-native:latest
+    container_name: kafka
+    networks:
+      - network_shared
+    ports:
+      - '9092:9092'
+      - '9093:9093'
+    env_file: .env
+    healthcheck:
+      test: [ "CMD", "sh", "-c", "nc -z localhost 9092" ]
+      interval: 1s # It may take some time for the group coordinator to become fully accessible.
+      retries: 5
+      timeout: 5s
+
+  producer:
+    build: ./producer
+    container_name: producer
+    environment:
+      KAFKA_BROKERS: kafka:19092 # Internal docker communication
+    networks:
+      - network_shared
+    depends_on:
+      kafka:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+
+  consumer:
+    build: ./consumer
+    container_name: consumer
+    environment:
+      KAFKA_BROKERS: kafka:19092 # Internal docker communication
+    networks:
+      - network_shared
+    depends_on:
+      kafka:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+
+volumes:
+  data_kafka:
+
+
+networks:
+  network_shared:
+    external: true
