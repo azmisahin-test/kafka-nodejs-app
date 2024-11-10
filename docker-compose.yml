@@ -1,7 +1,6 @@
 services:
   kafka:
     image: apache/kafka-native:latest
-    container_name: kafka
     networks:
       - network_shared
     ports:
