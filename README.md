@@ -1,6 +1,25 @@
 # kafka-nodejs-app
 Message exchange on Nodejs with Kafka Native inside and outside of Docker
 
+consumer/.env
+```
+# .env
+# Production Environment
+
+# Kafka Environment Convert
+KAFKA_BROKERS=localhost:9092
+```
+
+producer/.env
+```
+# .env
+# Production Environment
+
+# Kafka Environment Convert
+KAFKA_BROKERS=localhost:9092
+```
+
+/.env
 ```
 # .env
 # Production Environment
